@@ -1,0 +1,46 @@
+.vlp-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    height: 80px;
+    background-color: #73486C;
+
+    &-logo {
+        position: relative;
+        a {
+            height: 100%;
+            width: 100%;
+            position: absolute;
+        }
+        img {
+            height: 50px;
+        }
+    }
+
+    &-list {
+        ul {
+            list-style: none;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        &-item {
+            a {
+                display: inline-block;
+                margin-left: 20px;
+                font-size: 15px;
+                color: white;
+                text-decoration: none;
+                transition: color 0.2s ease-in-out;
+                font-family: 'Poppins';
+                font-weight: 300;
+                &:hover {
+                    color: #D9C2A7;
+                }
+            }
+
+        }
+    }
+}
