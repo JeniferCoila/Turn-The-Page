@@ -1,0 +1,21 @@
+
+.vlp-navbar-list-item {
+    a {
+        color: white;
+        font-size: 15px;
+        font-weight: 300;
+        margin-left: 20px;
+        display: inline-block;
+        text-decoration: none;
+        font-family: 'Poppins';
+        transition: color 0.2s ease-in-out;
+        &:hover {
+            color: #D9C2A7;
+        }
+    }
+    i {
+        font-size: 20px;
+        margin-right: 10px;
+    }
+
+}

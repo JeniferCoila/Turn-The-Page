@@ -1,0 +1,26 @@
+.vlp-navbar {
+    height: 80px;
+    display: flex;
+    padding: 0 20px;
+    align-items: center;
+    background-color: #73486C;
+    justify-content: space-between;
+
+    &-logo {
+
+        img {
+            height: 50px;
+        }
+    }
+
+    &-list {
+        ul {
+            margin: 0;
+            display: flex;
+            list-style: none;
+            flex-direction: row;
+            align-items: center;
+        }
+
+    }
+}
