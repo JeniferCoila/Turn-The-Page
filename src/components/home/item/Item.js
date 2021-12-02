@@ -15,6 +15,7 @@ const Item = (props) => {
       subject.next({
         item: 1,
         qty: 1,
+        addedToCart: false,
         ...props.data
       });
     }
@@ -26,7 +27,7 @@ const Item = (props) => {
             <p className="vlp-product-item-author">{author}</p>
             <span className="vlp-product-item-price">S/{price}</span>
             <ItemCount initial={dataInital.initial} stock= {dataInital.stock}></ItemCount>
-            <button onClick={onAdd()} className="btn btn-secondary">Agregar al carrito</button>
+            <button onClick={onAdd} className="btn btn-secondary">Agregar al carrito</button>
         </div>
       
     </div>
