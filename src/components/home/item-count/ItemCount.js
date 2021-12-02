@@ -18,10 +18,10 @@ const ItemCount = (props) => {
         }
     };
     return (
-        <div className="vlp-product-item">
-            <button onClick={increment}>+</button>
+        <div className="vlp-product-item-counter">
+            <button className="btn" onClick={decrement}>-</button>
             <h3>{count}</h3>
-            <button onClick={decrement}>-</button>
+            <button className="btn" onClick={increment}>+</button>
         </div>
     );
 };
