@@ -1,0 +1,26 @@
+.vlp-product-detail {
+    background-color: white;
+    &-container {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+    }
+    &-img {
+        img {
+            width: 200px;
+
+        }
+
+    }
+
+    &-main {
+        width: 400px;
+        text-align: left;
+        p {
+            font-size: 10px;
+        }
+    }
+
+}
