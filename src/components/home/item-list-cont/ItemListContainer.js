@@ -2,7 +2,7 @@ import "./ItemListContainer.scss";
 import ItemList from "../item-list/ItemList";
 import books from "../../../data/books.json";
 import React, { useState, useEffect } from "react";
-import ItemDetailContainer from "../item-detail-container/ItemDetailContainer";
+import SpinnerComponent from "../../../components/spinner/Spinner";
 
 const ItemListContainer = (props) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -19,7 +19,7 @@ const ItemListContainer = (props) => {
       }, 2000);
     })
       .then((res) => {
-        setBooksList(res.slice(0, 10));
+        setBooksList(res.slice(0, 24));
         setIsLoading(false);
       })
       .catch((err) => {
@@ -31,8 +31,7 @@ const ItemListContainer = (props) => {
   return (
     <div className="vlp-product-main">
       <h2>{props.greeting}</h2>
-      {isLoading ? <div>Cargando...</div> : <ItemList data = {booksList}/>}
-      <ItemDetailContainer/>
+      {isLoading ? <SpinnerComponent/> : <ItemList data = {booksList}/>}
     </div>
   );
 };

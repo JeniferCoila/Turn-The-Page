@@ -1,6 +1,5 @@
 import "./ItemDetail.scss";
 import ItemCount from "../item-count/ItemCount";
-// import {subject} from '../../../services/serviceItem';
 const img_path = "/assets/img/books/";
 
 const dataInital = {
@@ -20,7 +19,6 @@ const ItemDetail = ({product}) => {
 
   return (
     <div className="vlp-product-detail">
-      <h2>Detalles</h2>
       <div className="vlp-product-detail-container">
         <div className="vlp-product-detail-img">
           <img src={img_path + product.imageLink} alt={product.title} />

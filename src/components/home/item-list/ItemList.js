@@ -6,9 +6,9 @@ const ItemList = (props) => {
     const items  = props.data;
     return (
         <div className="vlp-product-list">
-          {items.map((book) => {
+          {items.map((book, index) => {
               return (
-                <Item data = {book}></Item>
+                <Item data = {book} key={`book-${index}`}></Item>
                 );
             })}
         </div>
