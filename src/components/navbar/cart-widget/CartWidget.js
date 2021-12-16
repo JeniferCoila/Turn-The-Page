@@ -3,29 +3,34 @@ import {subject} from "../../../services/serviceItem";
 import React, { useState, useEffect } from "react";
 
 const CartWidget = () => {
-  const [labelCart, setMessages] = useState(0);
+  const checkUserInitialCartData = () => {
+    const cartData = sessionStorage.getItem("cart");
+    if (cartData) {
+      const qtyItems = JSON.parse(cartData).data.length;
+      return qtyItems;
+    }
+    return 0;
+  };
+
+  const [labelCart, setLabelCart] = useState(checkUserInitialCartData());
+  // useEffect(() => {
+  //   window.addEventListener("storage", () => setLabelCart(checkUserCartData()));
+  //   return () => {
+  //     window.removeEventListener("storage", () =>
+  //       setLabelCart(checkUserCartData())
+  //     );
+  //   };
+  // }, []);
+
   useEffect(() => {
     const subscription = subject.subscribe(res => {
-      console.log(res.addedToCart)
-      setMessages(labelCart + 1);
+      setLabelCart(labelCart + 1);
 
-      // if(!res.addedToCart) { 
-      //   setMessages(labelCart + 1);
-      //   // const newResponse = res;
-      //   // newResponse.addedToCart = true;
-      //   // subject.next(newResponse);
-      // } else {
-      //   setMessages(labelCart); 
-      // }
     });
-    return() => subscription.unsubscribe;
-  });
+    return() => subscription.unsubscribe;  
+  }, [labelCart]);
 
-  return (
-    <span>
-          {labelCart}
-    </span>
-  );
+  return <span>{labelCart}</span>;
 };
 
 export default CartWidget;

@@ -1,5 +1,6 @@
 import "./ItemDetail.scss";
 import ItemCount from "../item-count/ItemCount";
+import { Link } from 'react-router-dom'
 const img_path = "/assets/img/books/";
 
 const dataInital = {
@@ -8,14 +9,6 @@ const dataInital = {
 };
 
 const ItemDetail = ({product}) => {
-  // const onAdd = () => {
-  //   subject.next({
-  //     item: 1,
-  //     qty: 1,
-  //     addedToCart: false,
-  //     ...props.data
-  //   });
-  // }
 
   return (
     <div className="vlp-product-detail">
@@ -44,9 +37,9 @@ const ItemDetail = ({product}) => {
           <ItemCount
             initial={dataInital.initial}
             stock={dataInital.stock}
+            data={product}
           ></ItemCount>
-          <button className="btn btn-primary">Comprar ahora</button>
-          <button className="btn btn-secondary">Agregar al carrito</button>
+          <Link to='/cart' className="btn btn-primary">Comprar ahora</Link>
         </div>
       </div>
     </div>
