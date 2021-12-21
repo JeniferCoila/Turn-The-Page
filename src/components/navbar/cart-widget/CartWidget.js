@@ -13,14 +13,7 @@ const CartWidget = () => {
   };
 
   const [labelCart, setLabelCart] = useState(checkUserInitialCartData());
-  // useEffect(() => {
-  //   window.addEventListener("storage", () => setLabelCart(checkUserCartData()));
-  //   return () => {
-  //     window.removeEventListener("storage", () =>
-  //       setLabelCart(checkUserCartData())
-  //     );
-  //   };
-  // }, []);
+
 
   useEffect(() => {
     const subscription = subject.subscribe(res => {
