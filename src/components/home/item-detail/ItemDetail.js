@@ -1,6 +1,7 @@
 import "./ItemDetail.scss";
 import ItemCount from "../item-count/ItemCount";
-import { Link } from 'react-router-dom'
+import ModalCartConfirmComponent from "../../../components/modal/cart-confirm/ModalCartConfirm";
+import React, { useState } from "react";
 const img_path = "/assets/img/books/";
 
 const dataInital = {
@@ -9,6 +10,12 @@ const dataInital = {
 };
 
 const ItemDetail = ({product}) => {
+
+  const [goToCart, setGoToCart] = useState(false);
+  
+  const addTocart = (confirm) => {
+    setGoToCart(confirm);
+  }
 
   return (
     <div className="vlp-product-detail">
@@ -34,12 +41,13 @@ const ItemDetail = ({product}) => {
             <p className="vlp-product-detail-price">Precio</p>
             <span className="vlp-product-detail-price">S/{product.price}</span>
           </div>
-          <ItemCount
+          {!goToCart ? 
+          <ItemCount onConfirm={addTocart}
             initial={dataInital.initial}
             stock={dataInital.stock}
             data={product}
-          ></ItemCount>
-          <Link to='/cart' className="btn btn-primary">Comprar ahora</Link>
+          ></ItemCount> :
+          <ModalCartConfirmComponent onConfirm={addTocart}/>}
         </div>
       </div>
     </div>

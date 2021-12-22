@@ -38,6 +38,7 @@ const ItemCount = (props) => {
     const newCart = { data: [...cartData, newItem] };
     sessionStorage.setItem("cart", JSON.stringify(newCart));
     subject.next(newCart);
+    props.onConfirm(true)
   };
 
   const updateItem = (cartItems, idxItem) => {
@@ -51,6 +52,7 @@ const ItemCount = (props) => {
     };
     console.log(newCart)
     sessionStorage.setItem("cart", JSON.stringify({ data: newCart }));
+    props.onConfirm(true)
   };
 
   const increment = () => {
