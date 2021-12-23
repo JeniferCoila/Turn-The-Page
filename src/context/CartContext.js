@@ -1,57 +1,88 @@
-import { useState, createContext, useContext } from "react";
+import { useState, createContext, useContext, useEffect } from "react";
 
-export const CartContext = createContext();
+export const CartContext = createContext([]);
 
 export const useCart = () => useContext(CartContext);
 
 const INITIAL_STATE = {
   addedItems: [],
   totalPrice: 0,
+  itemQty: 0,
+  totalQty: 0
 };
 
 export const CartProvider = ({ children }) => {
-  const [cart, setCart] = useState(INITIAL_STATE);
+  const [cartItems, setCartItems] = useState(INITIAL_STATE);
 
-  const addItem = (item) => {
-    // if (cart.addedItems.some((addedItem) => addedItem.name === item.name)) {
-    //   // ya existe el item, hacer algo
-    //   return;
-    // }
+
+  useEffect(() => {
+    const cartDataSaved = sessionStorage.getItem("cart");
+
+    if (!cartDataSaved) {
+      sessionStorage.setItem("cart", JSON.stringify(INITIAL_STATE));
+    } else {
+      setCartItems(JSON.parse(cartDataSaved));
+    }
+  }, []);
+  
+
+
+  const addItem = (prod, qtySelected) => {
+    console.log('se añade item', prod, cartItems)
     let idxItem = -1;
+    const newCart = cartItems;
 
-    cart.addedItems.forEach((addedItem, i) => {
-      if (item.id === addedItem.id) {
-        idxItem = i;
+    const newItem = {
+      id: prod.slug,
+      qty: qtySelected,
+      prod: prod,
+      addedToCart: true,
+    };
+
+    newCart.addedItems.forEach((item, i) => {
+      if (item.id === prod.slug) {
+          idxItem = i;
       }
     });
 
-    if (idxItem < 0) {
-        // addItem(cartDataItems);
-      } else {
-        // updateItem(cartData, idxItem);
-      }
+    if(idxItem >= 0) {
+      newCart.addedItems[idxItem].qty += qtySelected;
+    } else {
+      newCart.addedItems.push(newItem)
+    }
 
-    const newAddedItems = cart.addedItems.map((product) => {
-      //   if (product.name === "Bicicleta") return { ...product, quantity: 2 };
+    newCart.totalPrice = newCart.addedItems.reduce((acc, item) => {
+      return acc + item.prod.price * item.qty;
+    }, 0);
 
-      return product;
-    });
-    setCart({ ...cart, addedItems: newAddedItems });
+    newCart.itemQty = newCart.addedItems.length;
+
+    newCart.totalQty = newCart.addedItems.reduce((acc, item) => {
+      return acc + item.qty;
+    }, 0);
+
+    setCartItems(newCart);
+
+    sessionStorage.setItem("cart", JSON.stringify(newCart));
+
   };
 
   const clear = () => {
-    setCart(INITIAL_STATE);
+
+    setCartItems(INITIAL_STATE);
   };
 
   const removeItem = (item) => {
-    const newItems = cart.addedItems.filter(
+    const newCart = cartItems;
+
+    const newItems = newCart.addedItems.filter(
       (addedItem) => addedItem.id !== item.id
     );
-    setCart({ ...cart, addedItems: newItems });
+    setCartItems({ ...newCart, addedItems: newItems });
   };
 
   return (
-    <CartContext.Provider value={{ cart, addItem, clear, removeItem }}>
+    <CartContext.Provider value={{ cartItems, addItem, clear, removeItem }}>
       {children}
     </CartContext.Provider>
   );

@@ -1,57 +1,16 @@
 import "./ItemCount.scss";
-import React, { useState } from "react";
-import { subject } from "../../../services/serviceItem";
+import React, { useState, useContext } from "react";
+import { CartContext } from "../../../context/CartContext";
 
 const ItemCount = (props) => {
   const [count, setCounter] = useState(props.initial);
 
+  const {addItem} = useContext(CartContext);
+
   const stock = props.stock;
 
   const onAdd = () => {
-    const cartData = sessionStorage.getItem("cart");
-    if (cartData) {
-      const cartDataItems = JSON.parse(cartData).data;
-      let idxItem = -1;
-      cartDataItems.forEach((item, i) => {
-        if (item.id === props.data.slug) {
-            idxItem = i;
-        }
-    });
-
-      if (idxItem < 0) {
-        addItem(cartDataItems);
-      } else {
-        updateItem(cartData, idxItem);
-      }
-    } else {
-      addItem([]);
-    }
-  };
-
-  const addItem = (cartData) => {
-    const newItem = {
-      id: props.data.slug,
-      qty: count,
-      prod: props.data,
-      addedToCart: true,
-    };
-    const newCart = { data: [...cartData, newItem] };
-    sessionStorage.setItem("cart", JSON.stringify(newCart));
-    subject.next(newCart);
-    props.onConfirm(true)
-  };
-
-  const updateItem = (cartItems, idxItem) => {
-
-    const newCart = JSON.parse(cartItems).data;
-    newCart[idxItem] = {
-      id: props.data.slug,
-      qty: count,
-      prod: props.data,
-      addedToCart: true,
-    };
-    console.log(newCart)
-    sessionStorage.setItem("cart", JSON.stringify({ data: newCart }));
+    addItem(props.data, count);
     props.onConfirm(true)
   };
 
