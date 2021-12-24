@@ -10,7 +10,8 @@ const CartWidget = () => {
 
 
   useEffect(() => {
-    setqty(cartItems.itemQty);
+    console.log(cartItems.itemQty)
+    setqty(cartItems.itemQty)
   }, [cartItems.itemQty]);
   
   return <span>{qty}</span>;

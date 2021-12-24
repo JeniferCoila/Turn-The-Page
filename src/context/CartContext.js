@@ -11,6 +11,10 @@ const INITIAL_STATE = {
   totalQty: 0
 };
 
+const setSessionStorage = (cartItems) => {
+  sessionStorage.setItem("cart", JSON.stringify(cartItems));
+}
+
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState(INITIAL_STATE);
 
@@ -19,7 +23,7 @@ export const CartProvider = ({ children }) => {
     const cartDataSaved = sessionStorage.getItem("cart");
 
     if (!cartDataSaved) {
-      sessionStorage.setItem("cart", JSON.stringify(INITIAL_STATE));
+      setSessionStorage(INITIAL_STATE);
     } else {
       setCartItems(JSON.parse(cartDataSaved));
     }
@@ -62,14 +66,14 @@ export const CartProvider = ({ children }) => {
     }, 0);
 
     setCartItems(newCart);
-
-    sessionStorage.setItem("cart", JSON.stringify(newCart));
+    setSessionStorage(newCart);
 
   };
 
   const clear = () => {
 
     setCartItems(INITIAL_STATE);
+    setSessionStorage(INITIAL_STATE);
   };
 
   const removeItem = (item) => {
