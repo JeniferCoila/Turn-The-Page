@@ -1,54 +1,42 @@
 import "./ItemDetailContainer.scss";
 import ItemDetail from "../item-detail/ItemDetail";
 import React, { useState, useEffect } from "react";
-import { collection, getDocs, where, query } from "firebase/firestore";
+import { getDocs, query, collection, where } from "firebase/firestore";
 import { db } from "../../../services/firebase";
-import { useParams } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 import SpinnerComponent from "../../../components/spinner/Spinner";
 
-
 const ItemDetailContainer = () => {
-  
-  const {id} = useParams();
+  const paramId  = useParams().id;
 
-    const [isLoadingBook, setIsLoadingBook] = useState(true);
-    const [bookData, setBookData] = useState(null);
+  const [isLoadingBook, setIsLoadingBook] = useState(true);
+  const [bookData, setBookData] = useState(null);
 
-    // useEffect(() => {
-    //     getItem(id).then((res) => {
-    //       setBookData(res);
-    //       setIsLoadingBook(false);
-    //     })
-    //     .catch((err) => {
-    //       console.error(err);
-    //     });
-    // }, [id]);
-
-
-    
   useEffect(() => {
-    getDocs(query(collection(db, "books"), where("slug", "==", id)))
+    getDocs(query(collection(db, "books"), where('slug', '==', paramId)))
       .then((querySnapshot) => {
-        console.log(querySnapshot);
-        if (querySnapshot) {
-          const res = querySnapshot;
-          setBookData(res);
-          setIsLoadingBook(false);
-        }
-      })
-      .catch((error) => {
+        const res = querySnapshot.docs.map((doc) => {
+          return {
+            id: doc.id,
+            ...doc.data(),
+          };
+        });
+        setBookData(res[0]);
+      }).catch((error) => {
         console.log(error);
+      }).finally(() => {
+        setIsLoadingBook(false);
       });
     return () => {
       setBookData({});
     };
-  }, [id]);
-  
-    return (
-      <div className="vlp-product-detail">
-        {isLoadingBook ? <SpinnerComponent/> : <ItemDetail product = {bookData}/>}
-      </div>
-    );
-  };
+  }, [paramId]);
+
+  return (
+    <div className="vlp-product-detail">
+      {isLoadingBook ? <SpinnerComponent /> : <ItemDetail product={bookData} />}
+    </div>
+  );
+};
 
 export default ItemDetailContainer;
