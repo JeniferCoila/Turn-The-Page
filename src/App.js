@@ -5,6 +5,7 @@ import NavBar from "./components/navbar/NavBar";
 import ItemListContainer from "./components/home/item-list-cont/ItemListContainer";
 import ItemDetailContainer from "./components/home/item-detail-container/ItemDetailContainer";
 import ItemCategoryContainer from "./components/home/item-category-container/ItemCategoryContainer";
+import CartContainer from "./components/cart/Cart";
 
 
 const App = () => {
@@ -28,6 +29,8 @@ const App = () => {
               element={<ItemCategoryContainer />}
             ></Route>
             <Route path="/item/:id" element={<ItemDetailContainer />}></Route>
+            <Route path="/cart" element={<CartContainer />}></Route>
+
           </Routes>
         </div>
       </BrowserRouter>
