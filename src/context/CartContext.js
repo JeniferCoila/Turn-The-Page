@@ -7,17 +7,16 @@ export const useCart = () => useContext(CartContext);
 const INITIAL_STATE = {
   addedItems: [],
   totalPrice: 0,
-  itemQty: 0,
-  totalQty: 0
+  prodQty: 0,
+  totalQty: 0,
 };
 
 const setSessionStorage = (cartItems) => {
   sessionStorage.setItem("cart", JSON.stringify(cartItems));
-}
+};
 
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState(INITIAL_STATE);
-
 
   useEffect(() => {
     const cartDataSaved = sessionStorage.getItem("cart");
@@ -28,38 +27,38 @@ export const CartProvider = ({ children }) => {
       setCartItems(JSON.parse(cartDataSaved));
     }
   }, []);
-  
-
 
   const addItem = (prod, qtySelected) => {
-    console.log('se añade item', prod, cartItems)
+    console.log("se añade item", prod, cartItems);
     let idxItem = -1;
     const newCart = cartItems;
 
     const newItem = {
-      id: prod.slug,
+      id: prod.id,
       qty: qtySelected,
       prod: prod,
       addedToCart: true,
+      subtotal: prod.price * qtySelected,
     };
 
     newCart.addedItems.forEach((item, i) => {
-      if (item.id === prod.slug) {
-          idxItem = i;
+      if (item.id === prod.id) {
+        idxItem = i;
       }
     });
 
-    if(idxItem >= 0) {
+    if (idxItem >= 0) {
       newCart.addedItems[idxItem].qty += qtySelected;
+      newCart.addedItems[idxItem].subtotal += qtySelected * prod.price;
     } else {
-      newCart.addedItems.push(newItem)
+      newCart.addedItems.push(newItem);
     }
 
     newCart.totalPrice = newCart.addedItems.reduce((acc, item) => {
       return acc + item.prod.price * item.qty;
     }, 0);
 
-    newCart.itemQty = newCart.addedItems.length;
+    newCart.prodQty = newCart.addedItems.length;
 
     newCart.totalQty = newCart.addedItems.reduce((acc, item) => {
       return acc + item.qty;
@@ -67,11 +66,9 @@ export const CartProvider = ({ children }) => {
 
     setCartItems(newCart);
     setSessionStorage(newCart);
-
   };
 
-  const clear = () => {
-
+  const clearCart = () => {
     setCartItems(INITIAL_STATE);
     setSessionStorage(INITIAL_STATE);
   };
@@ -83,10 +80,19 @@ export const CartProvider = ({ children }) => {
       (addedItem) => addedItem.id !== item.id
     );
     setCartItems({ ...newCart, addedItems: newItems });
+    setSessionStorage({
+      ...newCart,
+      addedItems: newItems,
+      totalPrice: cartItems.totalPrice - item.prod.price * item.qty,
+      prodQty: newItems.length,
+      totalQty: newItems.reduce((acc, item) => {
+        return acc + item.qty;
+      }, 0),
+    });
   };
 
   return (
-    <CartContext.Provider value={{ cartItems, addItem, clear, removeItem }}>
+    <CartContext.Provider value={{ cartItems, addItem, clearCart, removeItem }}>
       {children}
     </CartContext.Provider>
   );

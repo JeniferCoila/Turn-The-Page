@@ -1,41 +1,75 @@
 import React, { useContext } from "react";
 import { CartContext } from "../../context/CartContext";
-const img_path = "/assets/img/books/";
+import CartItem from "./CartItem";
+import Table from "react-bootstrap/Table";
+import { Link } from "react-router-dom";
 
-const CartContainer = ({ product }) => {
-  const { cartItems } = useContext(CartContext);
+const CartContainer = () => {
+  const { cartItems, clearCart } = useContext(CartContext);
+  const { addedItems, totalPrice, totalQty } = cartItems;
+  const shippingPrice = totalPrice > 200 ? 0 : 10;
 
   return (
     <div>
-      <h2>Carrito de compras</h2>
-      <div>
-        {cartItems.addedItems.map((item) => (
-          <div key={item.id}>
-            <div className="vlp-product-detail-img">
-              <img src={img_path + item.prod.imageLink} alt={item.prod.title} />
-            </div>
-            <div>
-              <h3>{item.prod.title}</h3>
-              <p>
-                <span>Cantidad:</span>
-                <span>{item.qty} unidades</span>
-              </p>
-            </div>
-            <div>
-              <p>
-                <span>Precio unitario:</span>
-                <span>{item.prod.price}</span>
-              </p>
-            </div>
-            <div>
-              <p>
-                <span>Precio subtotal:</span>
-                <span>{item.prod.price*item.qty}</span>
-              </p>
-            </div>
-          </div>
-        ))}
-      </div>
+      {addedItems.length > 0 ? (
+        <div>
+          <button className="btn btn-primary" onClick={clearCart}>
+            <span className="badge badge-light">Vaciar carrito</span>
+          </button>
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>{totalQty} artículos en el carrito de compras</th>
+                <th>Cantidad</th>
+                <th>Subtotal</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {addedItems.map((item) => (
+                <CartItem item={item} key={item.id}>
+                </CartItem>
+              ))}
+            </tbody>
+          </Table>
+          <Table striped bordered hover size="sm">
+            <thead>
+              <tr>
+                <th colSpan="2">Resumen de compra</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Subtotal</td>
+                <td>S/ {totalPrice}</td>
+              </tr>
+              <tr>
+                <td>Envio</td>
+                <td>S/ {shippingPrice}</td>
+              </tr>
+              <tr>
+                <td>Total</td>
+                <td>S/ {totalPrice + shippingPrice}</td>
+              </tr>
+              <tr>
+                <td colSpan="2">
+                  <button className="btn btn-primary">Finalizar compra</button>
+                </td>
+              </tr>
+            </tbody>
+          </Table>
+        </div>
+      ) : (
+        <div>
+          <h3>No hay artículos en el carrito de compras</h3>
+          <p>Te recomendamos explorar nuestras novedades </p>
+          <Link to="/" className="vlp-product-item-link">
+            <button className="btn btn-primary">
+              <span className="badge badge-light">Ir a la tienda</span>
+            </button>
+          </Link>
+        </div>
+      )}
     </div>
   );
 };

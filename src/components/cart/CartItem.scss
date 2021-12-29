@@ -1,0 +1,14 @@
+.vlp-cart-product {
+    td {
+        vertical-align: middle;
+    }
+    &-container {
+        display: flex;
+    }
+
+    &-img {
+        img {
+            max-width: 120px;
+        }
+    }
+}
