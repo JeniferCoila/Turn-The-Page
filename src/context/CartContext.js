@@ -71,6 +71,7 @@ export const CartProvider = ({ children }) => {
   const clearCart = () => {
     setCartItems(INITIAL_STATE);
     setSessionStorage(INITIAL_STATE);
+    console.log('clean', cartItems);
   };
 
   const removeItem = (item) => {

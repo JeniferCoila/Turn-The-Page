@@ -55,29 +55,6 @@ const ItemCategoryContainer = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [booksList, setBooksList] = useState([]);
 
-    // useEffect(() => {
-    //     setIsLoading(true);
-    //     new Promise((resolve, reject) => {
-    //         setTimeout(() => {
-    //             try {
-    //                 const booksList = books.filter((book) => book.language.toLowerCase() === qryParam);
-    //                 resolve(booksList);
-    //             } catch (e) {
-    //                 reject(e);
-    //             }
-    //         }, 2000);
-    //     })
-    //         .then((res) => {
-    //             setBooksList(res.slice(0, 24));
-    //             setIsLoading(false);
-    //         })
-    //         .catch((err) => {
-    //             console.error(err);
-    //         });
-    // }, [qryParam]);
-
-
-
     useEffect(() => {
         getDocs(query(collection(db, "books"), where('language', '==', qryParam)))
           .then((querySnapshot) => {
