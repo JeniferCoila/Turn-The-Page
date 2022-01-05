@@ -1,21 +1,28 @@
 import React, { useContext } from "react";
 import "./LoginContainer.scss";
 import { LoginContext } from "../../context/LoginContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const LoginContainer = () => {
-  const { userData, registerUser } = useContext(LoginContext);
+  const { userData, loginUser } = useContext(LoginContext);
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(e);
-    registerUser({
+    loginUser({
       email: e.target.email.value,
       password: e.target.password.value,
-    });
+    })
+      .then(()=> {
+        navigate("/");
+      })
+      .catch((err) => {
+        alert(err);
+      });
   };
-  return (
-    <section>
+
+  const nologin = () => {
+    return (
       <div className="vlp-login-form">
         <div className="vlp-login-form-container col-md-4">
           <div className="vlp-login-form-header">
@@ -54,8 +61,19 @@ const LoginContainer = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    );
+  };
+
+  const login = () => {
+    return (
+      <div>
+        <h1>Bienvenido {userData.name}</h1>
+      </div>
+    );
+  };
+  return <section>
+    {userData.isLogged ? login() : nologin()}
+  </section>;
 };
 
 export default LoginContainer;

@@ -1,4 +1,7 @@
 import { useState, createContext, useContext, useEffect } from "react";
+import { LoginContext } from "./LoginContext";
+import { db } from "../services/firebase";
+import { doc, updateDoc } from "firebase/firestore";
 
 export const CartContext = createContext([]);
 
@@ -11,27 +14,37 @@ const INITIAL_STATE = {
   totalQty: 0,
 };
 
-const setSessionStorage = (cartItems) => {
+const setSessionStorage = (cartItems, userData) => {
   sessionStorage.setItem("cart", JSON.stringify(cartItems));
+
+  if (userData.isLogged) {
+    updateDoc(doc(db, "users", userData.id), { cartData: cartItems })
+      .then(() => {
+        console.log("Cart updated");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 };
 
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState(INITIAL_STATE);
 
+  const { userData } = useContext(LoginContext);
+
   useEffect(() => {
     const cartDataSaved = sessionStorage.getItem("cart");
-
     if (!cartDataSaved) {
-      setSessionStorage(INITIAL_STATE);
+      setSessionStorage(INITIAL_STATE, userData);
     } else {
       setCartItems(JSON.parse(cartDataSaved));
     }
-  }, []);
+  }, [userData]);
 
   const addItem = (prod, qtySelected) => {
-    console.log("se añade item", prod, cartItems);
     let idxItem = -1;
-    const newCart = cartItems;
+    const newCart = { ...cartItems };
 
     const newItem = {
       id: prod.id,
@@ -65,31 +78,29 @@ export const CartProvider = ({ children }) => {
     }, 0);
 
     setCartItems(newCart);
-    setSessionStorage(newCart);
+    setSessionStorage(newCart, userData);
   };
 
   const clearCart = () => {
     setCartItems(INITIAL_STATE);
-    setSessionStorage(INITIAL_STATE);
-    console.log('clean', cartItems);
+    setSessionStorage(INITIAL_STATE, userData);
   };
 
   const removeItem = (item) => {
-    const newCart = cartItems;
-
-    const newItems = newCart.addedItems.filter(
+    const newItems = { ...cartItems }.addedItems.filter(
       (addedItem) => addedItem.id !== item.id
     );
-    setCartItems({ ...newCart, addedItems: newItems });
-    setSessionStorage({
-      ...newCart,
+
+    const newCart = {
       addedItems: newItems,
       totalPrice: cartItems.totalPrice - item.prod.price * item.qty,
       prodQty: newItems.length,
       totalQty: newItems.reduce((acc, item) => {
         return acc + item.qty;
       }, 0),
-    });
+    };
+    setCartItems(newCart);
+    setSessionStorage(newCart, userData);
   };
 
   return (

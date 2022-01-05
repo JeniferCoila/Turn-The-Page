@@ -53,7 +53,9 @@ const CartContainer = () => {
               </tr>
               <tr>
                 <td colSpan="2">
+                <Link to="/myaccount" className="vlp-product-item-link">
                   <button className="btn btn-primary">Finalizar compra</button>
+                </Link>
                 </td>
               </tr>
             </tbody>

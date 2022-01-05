@@ -1,10 +1,11 @@
 import React, { useContext } from "react";
 import "./LoginContainer.scss";
 import { LoginContext } from "../../context/LoginContext";
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
+// import 
 const LoginContainer = () => {
-  const { userData, registerUser } = useContext(LoginContext);
+  const { registerUser } = useContext(LoginContext);
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -14,6 +15,11 @@ const LoginContainer = () => {
       name: e.target.name.value,
       lastname: e.target.lastName.value,
       phone: e.target.phone.value,
+    }).then(() => {
+      alert("Bienvenido, ya puedes iniciar sesión");
+      navigate("/myaccount");
+    }).catch(() => {
+      alert("Error al registrarse, por favor intente nuevamente");
     });
   };
   return (

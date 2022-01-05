@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { LoginProvider } from "./context/LoginContext";
 import { CartProvider } from "./context/CartContext";
 import "./App.scss";
 import NavBar from "./components/navbar/NavBar";
@@ -8,7 +9,6 @@ import ItemCategoryContainer from "./components/home/item-category-container/Ite
 import LoginContainer from "./components/login/LoginContainer";
 import SignupContainer from "./components/login/SignupContainer";
 import CartContainer from "./components/cart/Cart";
-import { LoginProvider } from "./context/LoginContext";
 
 const App = () => {
   return (

@@ -7,14 +7,16 @@ import { getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCBaVMVNKQRNodL_YPeeqUcpXpBsJXBYIQ",
-  authDomain: "voltea-la-pagina.firebaseapp.com",
-  databaseURL: "https://voltea-la-pagina-default-rtdb.firebaseio.com",
-  projectId: "voltea-la-pagina",
-  storageBucket: "voltea-la-pagina.appspot.com",
-  messagingSenderId: "476121793780",
-  appId: "1:476121793780:web:f7f55db3f1c5defc750aa1",
+  apiKey: process.env.REACT_APP_apiKey,
+  authDomain: process.env.REACT_APP_authDomain,
+  databaseURL: process.env.REACT_APP_databaseURL,
+  projectId: process.env.REACT_APP_projectId,
+  storageBucket: process.env.REACT_APP_storageBucket,
+  messagingSenderId: process.env.REACT_APP_messagingSenderId,
+  appId: process.env.REACT_APP_appId
 };
+
+
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
